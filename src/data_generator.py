@@ -35,6 +35,5 @@ def generate_data(dim, k, n_per_cluster, radius, cluster_dim, has_noise, n_noise
     Returns:
     - data: np.array, shape (n, dim), the synthetic dataset
     """
-    # Test of a force push
     data = np.random.rand(100, 2)
     return data
