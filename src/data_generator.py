@@ -42,13 +42,14 @@ def generate_data(dim, k, n_per_cluster, radius, cluster_dim, has_noise, n_noise
     # Generate the clusters
     for i in range(k):
         # Generate the cluster center
+        relevant_dimensions = np.random.choice(range(dim), cluster_dim, replace=False)
         center = np.random.rand(cluster_dim) * 100
 
         # Generate the cluster
         for j in range(n_per_cluster):
             # Generate the data point
-            data[i * n_per_cluster + j, :cluster_dim] = center + np.random.randn(cluster_dim) * radius
-            data[i * n_per_cluster + j, cluster_dim:] = np.random.rand(dim - cluster_dim) * 100
+            data[i * n_per_cluster + j, relevant_dimensions] = center + np.random.randn(cluster_dim) * radius
+            data[i * n_per_cluster + j, [d for d in range(dim) if d not in relevant_dimensions]] = np.random.rand(dim - cluster_dim) * 100
 
     # Generate the noise
     if has_noise:
