@@ -35,5 +35,23 @@ def generate_data(dim, k, n_per_cluster, radius, cluster_dim, has_noise, n_noise
     Returns:
     - data: np.array, shape (n, dim), the synthetic dataset
     """
-    data = np.random.rand(100, 2)
+
+    # Initialize the data array
+    data = np.zeros((k * n_per_cluster + n_noise, dim))
+
+    # Generate the clusters
+    for i in range(k):
+        # Generate the cluster center
+        center = np.random.rand(cluster_dim) * 100
+
+        # Generate the cluster
+        for j in range(n_per_cluster):
+            # Generate the data point
+            data[i * n_per_cluster + j, :cluster_dim] = center + np.random.randn(cluster_dim) * radius
+            data[i * n_per_cluster + j, cluster_dim:] = np.random.rand(dim - cluster_dim) * 100
+
+    # Generate the noise
+    if has_noise:
+        data[-n_noise:, :] = np.random.rand(n_noise, dim) * 100
+
     return data
