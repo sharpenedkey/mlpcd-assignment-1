@@ -47,9 +47,16 @@ def generate_data(dim, k, n_per_cluster, radius, cluster_dim, has_noise, n_noise
 
         # Generate the cluster
         for j in range(n_per_cluster):
-            # Generate the data point
-            data[i * n_per_cluster + j, relevant_dimensions] = center + np.random.randn(cluster_dim) * radius
-            data[i * n_per_cluster + j, [d for d in range(dim) if d not in relevant_dimensions]] = np.random.rand(dim - cluster_dim) * 100
+            # Generate the data point within the cluster
+            point = center + np.random.randn(cluster_dim) * radius
+            point = np.clip(point, 0, 100)  # Clip point values to [0, 100]
+
+            # Assign the point to relevant dimensions
+            data[i * n_per_cluster + j, relevant_dimensions] = point
+
+            # Generate random values for non-relevant dimensions
+            non_relevant_dimensions = [d for d in range(dim) if d not in relevant_dimensions]
+            data[i * n_per_cluster + j, non_relevant_dimensions] = np.random.rand(len(non_relevant_dimensions)) * 100
 
     # Generate the noise
     if has_noise:
